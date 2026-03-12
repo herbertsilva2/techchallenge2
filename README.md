@@ -18,7 +18,7 @@ To run the TSP solver, execute the `tsp.py` script using Python. The solver allo
 
 - Randomly generated cities
 - Default predefined problems with 10, 12, or 15 cities
-- `att17` benchmark dataset (uncomment relevant code in `tsp.py`)
+- `att35` benchmark dataset (uncomment relevant code in `tsp.py`)
 
 You can customize parameters such as population size, number of generations, and mutation probability directly in the `tsp.py` script.
 
