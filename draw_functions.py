@@ -4,13 +4,13 @@ Created on Fri Dec 22 16:03:11 2023
 
 @author: SérgioPolimante
 """
-import pylab
-import matplotlib.pyplot as plt
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-import matplotlib
-import pygame
 from typing import List, Tuple
+
+import matplotlib
+import matplotlib.pyplot as plt
+import pygame
+import numpy as np
+from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 matplotlib.use("Agg")
 
