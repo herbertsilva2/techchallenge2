@@ -7,6 +7,8 @@ from draw_functions import draw_paths, draw_plot, draw_cities
 import sys
 import numpy as np
 from benchmark_att35 import *
+from google import genai
+import math
 
 # Tentativa de importar folium
 try:
@@ -51,23 +53,86 @@ nomes_ras = [
 ]
 
 # Simulando dados reais para a LLM trabalhar:
-tipos_atendimento = [
-    "Medicamentos hormonais (Controle de Temperatura)", "Atendimento pós-parto (Janela de Tempo)",
-    "Emergência obstétrica (Prioridade Máxima)", "Consulta de Rotina", "Atendimento pós-parto (Janela de Tempo)",
-    "Casos de violência doméstica (Protocolos Especiais)", "Medicamentos hormonais (Controle de Temperatura)",
-    "Consulta de Rotina", "Emergência obstétrica (Prioridade Máxima)",
-    "Casos de violência doméstica (Protocolos Especiais)",
-    "Consulta de Rotina", "Emergência obstétrica (Prioridade Máxima)", "Atendimento pós-parto (Janela de Tempo)",
-    "Casos de violência doméstica (Protocolos Especiais)", "Medicamentos hormonais (Controle de Temperatura)",
-    "Consulta de Rotina", "Atendimento pós-parto (Janela de Tempo)", "Consulta de Rotina",
-    "Medicamentos hormonais (Controle de Temperatura)", "Consulta de Rotina", "Atendimento pós-parto (Janela de Tempo)",
-    "Consulta de Rotina", "Casos de violência doméstica (Protocolos Especiais)", "Consulta de Rotina",
-    "Emergência obstétrica (Prioridade Máxima)", "Atendimento pós-parto (Janela de Tempo)", "Consulta de Rotina",
-    "Casos de violência doméstica (Protocolos Especiais)", "Medicamentos hormonais (Controle de Temperatura)",
-    "Atendimento pós-parto (Janela de Tempo)", "Consulta de Rotina", "Emergência obstétrica (Prioridade Máxima)",
-    "Casos de violência doméstica (Protocolos Especiais)", "Atendimento pós-parto (Janela de Tempo)",
-    "Emergência obstétrica (Prioridade Máxima)"
+
+# --- LISTA COM OS NOMES DAS 35 CIDADES ---
+nomes_ras = [
+    "Plano Piloto", "Gama", "Taguatinga", "Brazlândia", "Sobradinho",
+    "Planaltina", "Paranoá", "N. Bandeirante", "Ceilândia", "Guará",
+    "Cruzeiro", "Samambaia", "Santa Maria", "São Sebastião", "Recanto das Emas",
+    "Lago Sul", "Riacho Fundo", "Lago Norte", "Candangolândia", "Águas Claras",
+    "Riacho Fundo II", "Sudoeste/Octogonal", "Varjão", "Park Way", "SCIA (Estrutural)",
+    "Sobradinho II", "Jardim Botânico", "Itapoã", "SIA", "Vicente Pires",
+    "Fercal", "Sol Nascente", "Arniqueira", "Arapoanga", "Água Quente"
 ]
+
+# ==============================================================================
+# --- GERAÇÃO ALEATÓRIA DOS TIPOS DE ATENDIMENTO ---
+# ==============================================================================
+# Definimos quais são as categorias possíveis na nossa simulação
+categorias_atendimento = [
+    "Emergência obstétrica (Prioridade Máxima)",
+    "Casos de violência doméstica (Protocolos Especiais)",
+    "Medicamentos hormonais (Controle de Temperatura)",
+    "Atendimento pós-parto (Janela de Tempo)",
+    "Consulta de Rotina"
+]
+
+# O Python vai sortear aleatoriamente 1 categoria para cada uma das 35 RAs
+tipos_atendimento = [random.choice(categorias_atendimento) for _ in range(len(nomes_ras))]
+
+# ==============================================================================
+# --- FUNÇÃO FITNESS COM RESTRIÇÕES (VRP - TECH CHALLENGE) ---
+# ==============================================================================
+def calculate_vrp_fitness(path):
+    distance = 0
+    penalty = 0
+    n = len(path)
+
+    # Restrição Adicional 2: Capacidade/Distância máxima do veículo por dia
+    DISTANCIA_MAXIMA = 12000
+
+    for i in range(n):
+        p1 = path[i]
+        p2 = path[(i + 1) % n]
+        dist_step = math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
+        distance += dist_step
+
+        # Descobre qual é a cidade atual para saber o tipo de atendimento
+        orig_idx = cities_locations.index(p1)
+        tipo = tipos_atendimento[orig_idx]
+
+        # ---------------------------------------------------------
+        # Restrição Obrigatória: Prioridade (Emergências e Violência)
+        # ---------------------------------------------------------
+        if "Emergência" in tipo or "Prioridade Máxima" in tipo:
+            # Se deixar a emergência para o final (índice 'i' alto), a multa é gigantesca!
+            # Multiplicamos por i^2 para que o algoritmo seja forçado a colocá-la nos primeiros lugares.
+            penalty += (i ** 2) * 500
+
+        elif "violência" in tipo.lower() or "Protocolos" in tipo:
+            # Violência doméstica também tem prioridade alta, mas um pouco menor que emergência médica
+            penalty += (i ** 2) * 200
+
+        # ---------------------------------------------------------
+        # Restrição Adicional 1: Tempo/Temperatura (Medicamentos)
+        # ---------------------------------------------------------
+        elif "hormonais" in tipo.lower() or "Temperatura" in tipo:
+            # O veículo não pode rodar mais de 4000 pixels antes de fazer esta entrega,
+            # senão a caixa de refrigeração perde a temperatura.
+            if distance > 4000:
+                penalty += (distance - 4000) * 10
+
+    # Aplica a multa se a distância total da rota ultrapassar o limite do veículo
+    if distance > DISTANCIA_MAXIMA:
+        penalty += (distance - DISTANCIA_MAXIMA) * 50
+
+    # O Fitness final é a distância real + todas as multas que a rota sofreu
+    return distance + penalty
+
+
+# ==============================================================================
+
+# ==============================================================================
 
 # Initialize Pygame
 pygame.init()
@@ -79,6 +144,9 @@ generation_counter = itertools.count(start=1)
 pygame.font.init()
 fonte_stats = pygame.font.SysFont("Arial", 16, bold=True)
 fonte_lista = pygame.font.SysFont("Arial", 14)
+
+# ADICIONE ESTA LINHA: Uma fonte menor (tamanho 12) para o botão de sair
+fonte_aviso = pygame.font.SysFont("Arial", 12, bold=True)
 
 # --- CARREGAR O MAPA ---
 try:
@@ -134,9 +202,9 @@ def draw_side_panel(screen, generation, best_fitness, stagnation_counter, best_s
 
     text_ras = fonte_stats.render(f"RAs: {len(cities_locations)}", True, BLACK)
     text_gen = fonte_stats.render(f"Geração: {generation}", True, BLACK)
-    text_dist = fonte_stats.render(f"Melhor distância: {best_fitness:.1f} px", True, BLACK)
+    text_dist = fonte_stats.render(f"Melhor distância: {best_fitness:.1f}", True, BLACK)
     text_stag = fonte_stats.render(f"Estagnação: {stagnation_counter}/{MAX_STAGNATION}", True, BLACK)
-    text_sair = fonte_stats.render("Comando: Aperte 'Q' para sair e gerar LLM", True, (150, 0, 0))
+    text_sair = fonte_aviso.render("Aperte 'Q' para sair e gerar LLM", True, (150, 0, 0))
     text_titulo_rota = fonte_stats.render("Ordem da rota atual:", True, BLACK)
 
     screen.blit(text_ras, (x_start, y_start))
@@ -177,9 +245,9 @@ while running:
         if tem_mapa_pygame:
             screen.blit(mapa_fundo, (offset_x_mapa, offset_y_mapa))
 
-        population_fitness = [calculate_fitness(individual) for individual in population]
+        population_fitness = [calculate_vrp_fitness(individual) for individual in population]
         population, population_fitness = sort_population(population, population_fitness)
-        best_fitness = calculate_fitness(population[0])
+        best_fitness = calculate_vrp_fitness(population[0])
 
         if best_fitness < previous_best_fitness:
             previous_best_fitness = best_fitness
@@ -195,11 +263,31 @@ while running:
         best_solutions.append(best_solution)
 
         draw_plot(screen, list(range(len(best_fitness_values))), best_fitness_values, y_label="Fitness")
+
         draw_side_panel(screen, geracao_atual, best_fitness, stagnation_counter, best_solution, cities_locations,
                         nomes_ras)
+
+        # ==============================================================================
+        # --- DESENHO PADRÃO COM DESTAQUE APENAS NA RA INICIAL ---
+        # ==============================================================================
+        # 1. Desenha todas as cidades como pontos vermelhos padrão
         draw_cities(screen, cities_locations, RED, NODE_RADIUS)
-        draw_paths(screen, best_solution, BLUE, width=3)
-        draw_paths(screen, population[1], rgb_color=(128, 128, 128), width=1)
+
+        # 2. Desenha a linha da rota principal em azul
+        if len(best_solution) > 0:
+            draw_paths(screen, best_solution, BLUE, width=3)
+
+            # 3. Destacar apenas o Ponto Inicial (Origem)
+            origem = best_solution[0]
+            # Desenha um círculo verde maior por cima da primeira cidade
+            pygame.draw.circle(screen, (0, 200, 0), origem, NODE_RADIUS + 4)
+            # Desenha um ponto branco no meio para dar um efeito de "alvo"
+            pygame.draw.circle(screen, (255, 255, 255), origem, NODE_RADIUS - 1)
+
+        # Desenhar uma rota secundária mais fraca (opcional)
+        if len(population) > 1:
+            draw_paths(screen, population[1], rgb_color=(128, 128, 128), width=1)
+        # ==============================================================================
 
         if evolving:
             new_population = [population[0]]
@@ -218,8 +306,27 @@ while running:
             draw_plot(screen, list(range(len(best_fitness_values))), best_fitness_values, y_label="Fitness")
             draw_side_panel(screen, geracao_atual, best_fitness, stagnation_counter, best_solution, cities_locations,
                             nomes_ras)
+            # ==============================================================================
+            # --- DESENHO PADRÃO COM DESTAQUE APENAS NA RA INICIAL ---
+            # ==============================================================================
+            # 1. Desenha todas as cidades como pontos vermelhos padrão
             draw_cities(screen, cities_locations, RED, NODE_RADIUS)
-            draw_paths(screen, best_solution, BLUE, width=3)
+
+            # 2. Desenha a linha da rota principal em azul
+            if len(best_solution) > 0:
+                draw_paths(screen, best_solution, BLUE, width=3)
+
+                # 3. Destacar apenas o Ponto Inicial (Origem)
+                origem = best_solution[0]
+                # Desenha um círculo verde maior por cima da primeira cidade
+                pygame.draw.circle(screen, (0, 200, 0), origem, NODE_RADIUS + 4)
+                # Desenha um ponto branco no meio para dar um efeito de "alvo"
+                pygame.draw.circle(screen, (255, 255, 255), origem, NODE_RADIUS - 1)
+
+            # Desenhar uma rota secundária mais fraca (opcional)
+            if len(population) > 1:
+                draw_paths(screen, population[1], rgb_color=(128, 128, 128), width=1)
+            # ==============================================================================
 
     pygame.display.flip()
     clock.tick(FPS)
@@ -227,61 +334,73 @@ while running:
 pygame.quit()
 
 # ==============================================================================
-# --- INTEGRAÇÃO LLM: GERAÇÃO DO ROTEIRO E MANUAL (REQUISITO 3 - PROJETO 2) ---
+# --- INTEGRAÇÃO LLM REAL: API DO GOOGLE GEMINI (NOVA BIBLIOTECA) ---
 # ==============================================================================
-print("\nGerando Relatório e Manual via LLM...")
 
-ordem_final_indices = [cities_locations.index(cidade) for cidade in best_solution]
+print("\nA conectar à Inteligência Artificial (Google Gemini)...")
 
-# 1. Estruturando os dados para a "LLM"
-roteiro_detalhado = ""
-for i, idx in enumerate(ordem_final_indices):
-    roteiro_detalhado += f"{i + 1}º Parada: {nomes_ras[idx]}\n"
-    roteiro_detalhado += f"   - Tipo de Atendimento: {tipos_atendimento[idx]}\n"
+# COLOCAR A SUA CHAVE DE API AQUI (Mantenha as aspas)
+CHAVE_API = "AIzaSyDII1zx2FfWsjr3eGLFPk9sudEmxrKJdYM"
 
-    # Adicionando instruções específicas baseadas no tipo de atendimento (Simulação de output da LLM)
-    if "Emergência" in tipos_atendimento[idx]:
-        roteiro_detalhado += "   - [AÇÃO LLM]: Ligar sirene ao entrar na RA. Preparar kit de estabilização. Tempo de parada mínimo estimado: 15 min.\n"
-    elif "Violência doméstica" in tipos_atendimento[idx]:
-        roteiro_detalhado += "   - [AÇÃO LLM]: Abordagem discreta obrigatória (Veículo descaracterizado). Seguir protocolo de escuta ativa e acolhimento seguro.\n"
-    elif "hormonais" in tipos_atendimento[idx]:
-        roteiro_detalhado += "   - [AÇÃO LLM]: Verificar temperatura da caixa refrigerada (deve estar entre 2°C e 8°C) antes de realizar a entrega.\n"
-    else:
-        roteiro_detalhado += "   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.\n"
-    roteiro_detalhado += "\n"
+try:
+    # Nova forma de inicializar o cliente do Gemini
+    client = genai.Client(api_key=CHAVE_API)
 
-# 2. Montando o texto final do relatório
-relatorio_llm = f"""
-=========================================================
- MANUAL DE INSTRUÇÕES E ROTEIRO DE EQUIPE (GERADO POR LLM)
-=========================================================
-CONTEXTO:
-Este relatório foi gerado automaticamente para guiar a equipe de 
-transporte especializado em saúde da mulher pelo Distrito Federal.
-A rota foi otimizada matematicamente para cobrir {len(cities_locations)} 
-Regiões Administrativas com a maior eficiência possível.
+    ordem_final_indices = [cities_locations.index(cidade) for cidade in best_solution]
 
-ROTEIRO DETALHADO (ORDEM DE VISITAS):
----------------------------------------------------------
-{roteiro_detalhado}
-=========================================================
-ORIENTAÇÕES FINAIS (LLM):
-Lembre-se de manter o respeito e a privacidade de todas as pacientes. 
-Em caso de mudança de prioridade (ex: nova emergência obstétrica), 
-o algoritmo deverá ser rodado novamente para recálculo de rota.
-=========================================================
-"""
+    # 1. Preparar a lista base para enviar à IA
+    roteiro_base_para_ia = ""
+    for i, idx in enumerate(ordem_final_indices):
+        roteiro_base_para_ia += f"{i + 1}º Parada: {nomes_ras[idx]} | Tipo: {tipos_atendimento[idx]}\n"
 
-# 3. Salvando e exibindo
-with open("roteiro_equipe_llm.txt", "w", encoding="utf-8") as f:
-    f.write(relatorio_llm)
+    # 2. O Prompt de Engenharia (Few-Shot)
+    prompt = f"""
+    Atue como um especialista em logística médica e saúde da mulher. 
+    Recebeu uma rota otimizada (via Algoritmo Genético) para uma equipa médica móvel no Distrito Federal.
+    A sua tarefa é gerar um manual de instruções curtas, operacionais, seguras e sensíveis para a equipa em cada paragem.
 
-print(relatorio_llm)
-print("Sucesso! O manual da equipe foi salvo como 'roteiro_equipe_llm.txt'.\n")
+    REGRA ESTRITA DE FORMATAÇÃO (O nosso sistema de Dashboard depende deste formato exato, não o altere):
+    Xº Parada: [Nome da RA]
+       - Tipo de Atendimento: [Tipo exato que foi enviado]
+       - [AÇÃO LLM]: [A sua instrução aqui. Seja direto, cite a temperatura se for hormonas, discrição se for violência, ou urgência se for emergência.]
 
-# --- FORMA 2: GERAR MAPA INTERATIVO NO FOLIUM ---
+    ROTA A PROCESSAR:
+    {roteiro_base_para_ia}
+
+    Gere o relatório completo agora, começando com um cabeçalho de 'MANUAL DE INSTRUÇÕES E ROTEIRO DE EQUIPE'.
+    """
+
+    # 3. Chamar a IA para gerar o texto
+    print("A gerar as instruções contextuais. Aguarde uns segundos...")
+
+    # Nova forma de chamar o modelo
+    resposta_ia = client.models.generate_content(
+        model='gemini-2.5-flash',
+        contents=prompt,
+    )
+    relatorio_llm = resposta_ia.text
+
+    # 4. Guardar o ficheiro
+    with open("roteiro_equipe_llm.txt", "w", encoding="utf-8") as f:
+        f.write(relatorio_llm)
+
+    print("\n--- SUCESSO! ---")
+    print("A Inteligência Artificial gerou o manual!")
+    print("Pode agora abrir o seu Dashboard no Streamlit para ver o resultado real.")
+
+except Exception as e:
+    print(f"\nOcorreu um erro ao contactar a API da IA: {e}")
+    print("Verifique se colocou a sua CHAVE_API corretamente.")
+# ==============================================================================
+
+# --- FORMA 2: GERAR MAPA INTERATIVO NO FOLIUM (COM ROTAS REAIS POR GPS) ---
 if TEM_FOLIUM:
-    print("A gerar o mapa interativo no Folium...")
+    import requests
+    import time
+
+    print("\n🗺️ A gerar o mapa interativo no Folium (Calculando rotas reais pelas ruas, aguarde)...")
+
+    # Coordenadas reais das 35 RAs
     coords_df = [
         (-15.7795, -47.9296), (-16.0160, -48.0682), (-15.8333, -48.0563), (-15.6103, -48.1200), (-15.6580, -47.7925),
         (-15.6216, -47.6521), (-15.7757, -47.7799), (-15.8711, -47.9709), (-15.8127, -48.1038), (-15.8102, -47.9713),
@@ -293,14 +412,94 @@ if TEM_FOLIUM:
     ]
 
     mapa_folium = folium.Map(location=[-15.7950, -47.9296], zoom_start=10)
-    rota_lat_lon = [coords_df[i] for i in ordem_final_indices]
-    rota_lat_lon.append(rota_lat_lon[0])
 
-    for lat, lon in coords_df:
-        folium.CircleMarker(location=[lat, lon], radius=4, color='red', fill=True).add_to(mapa_folium)
+    # 1. Traçar as rotas reais usando a API OSRM (GPS)
+    for i in range(len(ordem_final_indices)):
+        idx_atual = ordem_final_indices[i]
+        # O último ponto conecta de volta ao primeiro (fechar o ciclo)
+        idx_prox = ordem_final_indices[(i + 1) % len(ordem_final_indices)]
 
-    folium.PolyLine(rota_lat_lon, color="blue", weight=2.5, opacity=0.8).add_to(mapa_folium)
+        lat1, lon1 = coords_df[idx_atual]
+        lat2, lon2 = coords_df[idx_prox]
+
+        # Chamada à API pública de GPS (OSRM)
+        url = f"http://router.project-osrm.org/route/v1/driving/{lon1},{lat1};{lon2},{lat2}?overview=full&geometries=geojson"
+
+        try:
+            resposta = requests.get(url)
+            if resposta.status_code == 200:
+                dados = resposta.json()
+                # A API devolve [Longitude, Latitude], o Folium precisa de [Latitude, Longitude]
+                coordenadas_rota = dados['routes'][0]['geometry']['coordinates']
+                rota_folium = [[lat, lon] for lon, lat in coordenadas_rota]
+
+                # Desenha o caminho exato da rua
+                folium.PolyLine(rota_folium, color="blue", weight=3.5, opacity=0.8).add_to(mapa_folium)
+            else:
+                # Se a API falhar (limite de uso rápido), desenha linha reta como plano B
+                folium.PolyLine([(lat1, lon1), (lat2, lon2)], color="blue", weight=3.5, opacity=0.8).add_to(mapa_folium)
+        except Exception as e:
+            folium.PolyLine([(lat1, lon1), (lat2, lon2)], color="blue", weight=3.5, opacity=0.8).add_to(mapa_folium)
+
+        # Pausa muito breve para não sobrecarregar a API pública
+        time.sleep(0.1)
+
+    # 2. Iterar sobre a ordem final para criar os marcadores numerados (mantém o que fizemos antes!)
+    for ordem, idx in enumerate(ordem_final_indices):
+        lat, lon = coords_df[idx]
+        nome_ra = nomes_ras[idx]
+        tipo_atendimento = tipos_atendimento[idx]
+
+        cor_fundo = "green"
+        if "Emergência" in tipo_atendimento or "Prioridade Máxima" in tipo_atendimento:
+            cor_fundo = "darkred"
+        elif "violência" in tipo_atendimento.lower():
+            cor_fundo = "darkorange"
+
+        tamanho = "28px" if ordem == 0 else "22px"
+        borda = "3px solid black" if ordem == 0 else "2px solid white"
+        z_index = "1000" if ordem == 0 else "auto"
+
+        html_num = f'''
+            <div style="
+                font-family: Arial; color: white; background-color: {cor_fundo}; 
+                border-radius: 50%; width: {tamanho}; height: {tamanho}; 
+                display: flex; justify-content: center; align-items: center; 
+                font-weight: bold; font-size: 12px; border: {borda};
+                box-shadow: 2px 2px 4px rgba(0,0,0,0.5); z-index: {z_index};
+            ">{ordem + 1}</div>
+        '''
+
+        folium.Marker(
+            location=[lat, lon],
+            icon=folium.DivIcon(html=html_num, icon_anchor=(12, 12)),
+            tooltip=f"<b>{ordem + 1}º Parada: {nome_ra}</b><br>{tipo_atendimento}"
+        ).add_to(mapa_folium)
 
     mapa_folium.save("resultado_tsp_mapa.html")
+
+
+# ==============================================================================
+# --- GUARDAR HISTÓRICO DE EVOLUÇÃO (FITNESS) PARA O DASHBOARD ---
+# ==============================================================================
+print("📊 A exportar dados de evolução do Algoritmo Genético...")
+import csv
+
+with open("fitness_evolution.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    writer.writerow(["Geracao", "Fitness"])
+    # best_fitness_values é a lista que o seu código já usava para o gráfico do Pygame!
+    for geracao, valor_fitness in enumerate(best_fitness_values):
+        writer.writerow([geracao, valor_fitness])
+# ==============================================================================
+
+# ==============================================================================
+# --- AUTO-INICIALIZAÇÃO DO DASHBOARD (STREAMLIT) ---
+# ==============================================================================
+import os
+
+print("\n🚀 A iniciar o Dashboard Interativo (Streamlit)...")
+print("O navegador deve abrir automaticamente. Para fechar o servidor depois, prima Ctrl+C no terminal.")
+os.system("streamlit run app_painel.py")
 
 sys.exit()
