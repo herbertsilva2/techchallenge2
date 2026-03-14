@@ -1,159 +1,141 @@
+MANUAL DE INSTRUÇÕES E ROTEIRO DE EQUIPE
 
-=========================================================
- MANUAL DE INSTRUÇÕES E ROTEIRO DE EQUIPE (GERADO POR LLM)
-=========================================================
-CONTEXTO:
-Este relatório foi gerado automaticamente para guiar a equipe de 
-transporte especializado em saúde da mulher pelo Distrito Federal.
-A rota foi otimizada matematicamente para cobrir 35 
-Regiões Administrativas com a maior eficiência possível.
-
-ROTEIRO DETALHADO (ORDEM DE VISITAS):
----------------------------------------------------------
-1º Parada: Água Quente
+1º Parada: N. Bandeirante
    - Tipo de Atendimento: Emergência obstétrica (Prioridade Máxima)
-   - [AÇÃO LLM]: Ligar sirene ao entrar na RA. Preparar kit de estabilização. Tempo de parada mínimo estimado: 15 min.
+   - [AÇÃO LLM]: Urgência! Avaliar e estabilizar a paciente imediatamente. Preparar para transporte rápido e seguro, se necessário. Manter comunicação constante com a central.
 
-2º Parada: Gama
-   - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-3º Parada: Santa Maria
-   - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-4º Parada: Guará
-   - Tipo de Atendimento: Casos de violência doméstica (Protocolos Especiais)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-5º Parada: Varjão
-   - Tipo de Atendimento: Casos de violência doméstica (Protocolos Especiais)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-6º Parada: Sobradinho
-   - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-7º Parada: Fercal
-   - Tipo de Atendimento: Consulta de Rotina
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-8º Parada: Sobradinho II
-   - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-9º Parada: Arapoanga
-   - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-10º Parada: Planaltina
-   - Tipo de Atendimento: Casos de violência doméstica (Protocolos Especiais)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-11º Parada: Lago Norte
-   - Tipo de Atendimento: Consulta de Rotina
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-12º Parada: Lago Sul
-   - Tipo de Atendimento: Consulta de Rotina
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-13º Parada: Candangolândia
-   - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
-   - [AÇÃO LLM]: Verificar temperatura da caixa refrigerada (deve estar entre 2°C e 8°C) antes de realizar a entrega.
-
-14º Parada: Riacho Fundo
-   - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-15º Parada: Águas Claras
-   - Tipo de Atendimento: Consulta de Rotina
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-16º Parada: Vicente Pires
-   - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-17º Parada: Taguatinga
+2º Parada: Arniqueira
    - Tipo de Atendimento: Emergência obstétrica (Prioridade Máxima)
-   - [AÇÃO LLM]: Ligar sirene ao entrar na RA. Preparar kit de estabilização. Tempo de parada mínimo estimado: 15 min.
+   - [AÇÃO LLM]: Urgência! Avaliar e estabilizar a paciente imediatamente. Preparar para transporte rápido e seguro, se necessário. Manter comunicação constante com a central.
 
-18º Parada: Plano Piloto
-   - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
-   - [AÇÃO LLM]: Verificar temperatura da caixa refrigerada (deve estar entre 2°C e 8°C) antes de realizar a entrega.
+3º Parada: Água Quente
+   - Tipo de Atendimento: Emergência obstétrica (Prioridade Máxima)
+   - [AÇÃO LLM]: Urgência! Avaliar e estabilizar a paciente imediatamente. Preparar para transporte rápido e seguro, se necessário. Manter comunicação constante com a central.
 
-19º Parada: SIA
-   - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
-   - [AÇÃO LLM]: Verificar temperatura da caixa refrigerada (deve estar entre 2°C e 8°C) antes de realizar a entrega.
+4º Parada: Taguatinga
+   - Tipo de Atendimento: Emergência obstétrica (Prioridade Máxima)
+   - [AÇÃO LLM]: Urgência! Avaliar e estabilizar a paciente imediatamente. Preparar para transporte rápido e seguro, se necessário. Manter comunicação constante com a central.
 
-20º Parada: Itapoã
+5º Parada: Águas Claras
+   - Tipo de Atendimento: Emergência obstétrica (Prioridade Máxima)
+   - [AÇÃO LLM]: Urgência! Avaliar e estabilizar a paciente imediatamente. Preparar para transporte rápido e seguro, se necessário. Manter comunicação constante com a central.
+
+6º Parada: SIA
    - Tipo de Atendimento: Casos de violência doméstica (Protocolos Especiais)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
+   - [AÇÃO LLM]: Máxima discrição e sensibilidade. Criar ambiente seguro e confidencial. Seguir protocolo de atendimento à violência doméstica, oferecer suporte psicológico e encaminhamento.
 
-21º Parada: Paranoá
-   - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
-   - [AÇÃO LLM]: Verificar temperatura da caixa refrigerada (deve estar entre 2°C e 8°C) antes de realizar a entrega.
-
-22º Parada: São Sebastião
+7º Parada: Vicente Pires
    - Tipo de Atendimento: Casos de violência doméstica (Protocolos Especiais)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
+   - [AÇÃO LLM]: Máxima discrição e sensibilidade. Criar ambiente seguro e confidencial. Seguir protocolo de atendimento à violência doméstica, oferecer suporte psicológico e encaminhamento.
 
-23º Parada: Jardim Botânico
-   - Tipo de Atendimento: Consulta de Rotina
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-24º Parada: Park Way
-   - Tipo de Atendimento: Consulta de Rotina
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-25º Parada: Riacho Fundo II
-   - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
-
-26º Parada: Arniqueira
+8º Parada: Recanto das Emas
    - Tipo de Atendimento: Casos de violência doméstica (Protocolos Especiais)
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
+   - [AÇÃO LLM]: Máxima discrição e sensibilidade. Criar ambiente seguro e confidencial. Seguir protocolo de atendimento à violência doméstica, oferecer suporte psicológico e encaminhamento.
 
-27º Parada: N. Bandeirante
-   - Tipo de Atendimento: Consulta de Rotina
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
+9º Parada: Jardim Botânico
+   - Tipo de Atendimento: Casos de violência doméstica (Protocolos Especiais)
+   - [AÇÃO LLM]: Máxima discrição e sensibilidade. Criar ambiente seguro e confidencial. Seguir protocolo de atendimento à violência doméstica, oferecer suporte psicológico e encaminhamento.
 
-28º Parada: Sudoeste/Octogonal
-   - Tipo de Atendimento: Consulta de Rotina
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
+10º Parada: Lago Sul
+    - Tipo de Atendimento: Casos de violência doméstica (Protocolos Especiais)
+    - [AÇÃO LLM]: Máxima discrição e sensibilidade. Criar ambiente seguro e confidencial. Seguir protocolo de atendimento à violência doméstica, oferecer suporte psicológico e encaminhamento.
 
-29º Parada: Cruzeiro
-   - Tipo de Atendimento: Consulta de Rotina
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
+11º Parada: Varjão
+    - Tipo de Atendimento: Casos de violência doméstica (Protocolos Especiais)
+    - [AÇÃO LLM]: Máxima discrição e sensibilidade. Criar ambiente seguro e confidencial. Seguir protocolo de atendimento à violência doméstica, oferecer suporte psicológico e encaminhamento.
 
-30º Parada: SCIA (Estrutural)
-   - Tipo de Atendimento: Emergência obstétrica (Prioridade Máxima)
-   - [AÇÃO LLM]: Ligar sirene ao entrar na RA. Preparar kit de estabilização. Tempo de parada mínimo estimado: 15 min.
+12º Parada: Lago Norte
+    - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
+    - [AÇÃO LLM]: Verificar integridade da cadeia de frio. Dispensar medicamentos hormonais mantidos entre 2°C e 8°C. Instruir sobre armazenamento domiciliar correto.
 
-31º Parada: Brazlândia
-   - Tipo de Atendimento: Consulta de Rotina
-   - [AÇÃO LLM]: Confirmar dados da paciente e realizar orientações padrão de saúde da mulher.
+13º Parada: Sobradinho
+    - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
+    - [AÇÃO LLM]: Verificar integridade da cadeia de frio. Dispensar medicamentos hormonais mantidos entre 2°C e 8°C. Instruir sobre armazenamento domiciliar correto.
 
-32º Parada: Ceilândia
-   - Tipo de Atendimento: Emergência obstétrica (Prioridade Máxima)
-   - [AÇÃO LLM]: Ligar sirene ao entrar na RA. Preparar kit de estabilização. Tempo de parada mínimo estimado: 15 min.
+14º Parada: Planaltina
+    - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
+    - [AÇÃO LLM]: Verificar integridade da cadeia de frio. Dispensar medicamentos hormonais mantidos entre 2°C e 8°C. Instruir sobre armazenamento domiciliar correto.
 
-33º Parada: Sol Nascente
-   - Tipo de Atendimento: Emergência obstétrica (Prioridade Máxima)
-   - [AÇÃO LLM]: Ligar sirene ao entrar na RA. Preparar kit de estabilização. Tempo de parada mínimo estimado: 15 min.
+15º Parada: São Sebastião
+    - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
+    - [AÇÃO LLM]: Verificar integridade da cadeia de frio. Dispensar medicamentos hormonais mantidos entre 2°C e 8°C. Instruir sobre armazenamento domiciliar correto.
 
-34º Parada: Samambaia
-   - Tipo de Atendimento: Emergência obstétrica (Prioridade Máxima)
-   - [AÇÃO LLM]: Ligar sirene ao entrar na RA. Preparar kit de estabilização. Tempo de parada mínimo estimado: 15 min.
+16º Parada: Cruzeiro
+    - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
+    - [AÇÃO LLM]: Verificar integridade da cadeia de frio. Dispensar medicamentos hormonais mantidos entre 2°C e 8°C. Instruir sobre armazenamento domiciliar correto.
 
-35º Parada: Recanto das Emas
-   - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
-   - [AÇÃO LLM]: Verificar temperatura da caixa refrigerada (deve estar entre 2°C e 8°C) antes de realizar a entrega.
+17º Parada: Candangolândia
+    - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
+    - [AÇÃO LLM]: Verificar integridade da cadeia de frio. Dispensar medicamentos hormonais mantidos entre 2°C e 8°C. Instruir sobre armazenamento domiciliar correto.
 
+18º Parada: Santa Maria
+    - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
+    - [AÇÃO LLM]: Verificar integridade da cadeia de frio. Dispensar medicamentos hormonais mantidos entre 2°C e 8°C. Instruir sobre armazenamento domiciliar correto.
 
-=========================================================
-ORIENTAÇÕES FINAIS (LLM):
-Lembre-se de manter o respeito e a privacidade de todas as pacientes. 
-Em caso de mudança de prioridade (ex: nova emergência obstétrica), 
-o algoritmo deverá ser rodado novamente para recálculo de rota.
-=========================================================
+19º Parada: Riacho Fundo II
+    - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
+    - [AÇÃO LLM]: Verificar integridade da cadeia de frio. Dispensar medicamentos hormonais mantidos entre 2°C e 8°C. Instruir sobre armazenamento domiciliar correto.
+
+20º Parada: Samambaia
+    - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
+    - [AÇÃO LLM]: Verificar integridade da cadeia de frio. Dispensar medicamentos hormonais mantidos entre 2°C e 8°C. Instruir sobre armazenamento domiciliar correto.
+
+21º Parada: Brazlândia
+    - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
+    - [AÇÃO LLM]: Verificar integridade da cadeia de frio. Dispensar medicamentos hormonais mantidos entre 2°C e 8°C. Instruir sobre armazenamento domiciliar correto.
+
+22º Parada: Plano Piloto
+    - Tipo de Atendimento: Medicamentos hormonais (Controle de Temperatura)
+    - [AÇÃO LLM]: Verificar integridade da cadeia de frio. Dispensar medicamentos hormonais mantidos entre 2°C e 8°C. Instruir sobre armazenamento domiciliar correto.
+
+23º Parada: SCIA (Estrutural)
+    - Tipo de Atendimento: Consulta de Rotina
+    - [AÇÃO LLM]: Realizar consulta médica padrão. Focar na saúde preventiva e bem-estar da mulher. Disponibilizar informações sobre acesso a serviços de saúde.
+
+24º Parada: Ceilândia
+    - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
+    - [AÇÃO LLM]: Avaliar mãe e recém-nascido. Monitorar sinais vitais, aleitamento e cicatrização. Aconselhar sobre cuidados pós-parto e sinais de alerta dentro da janela de tempo.
+
+25º Parada: Sol Nascente
+    - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
+    - [AÇÃO LLM]: Avaliar mãe e recém-nascido. Monitorar sinais vitais, aleitamento e cicatrização. Aconselhar sobre cuidados pós-parto e sinais de alerta dentro da janela de tempo.
+
+26º Parada: Gama
+    - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
+    - [AÇÃO LLM]: Avaliar mãe e recém-nascido. Monitorar sinais vitais, aleitamento e cicatrização. Aconselhar sobre cuidados pós-parto e sinais de alerta dentro da janela de tempo.
+
+27º Parada: Park Way
+    - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
+    - [AÇÃO LLM]: Avaliar mãe e recém-nascido. Monitorar sinais vitais, aleitamento e cicatrização. Aconselhar sobre cuidados pós-parto e sinais de alerta dentro da janela de tempo.
+
+28º Parada: Paranoá
+    - Tipo de Atendimento: Consulta de Rotina
+    - [AÇÃO LLM]: Realizar consulta médica padrão. Focar na saúde preventiva e bem-estar da mulher. Disponibilizar informações sobre acesso a serviços de saúde.
+
+29º Parada: Sobradinho II
+    - Tipo de Atendimento: Consulta de Rotina
+    - [AÇÃO LLM]: Realizar consulta médica padrão. Focar na saúde preventiva e bem-estar da mulher. Disponibilizar informações sobre acesso a serviços de saúde.
+
+30º Parada: Itapoã
+    - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
+    - [AÇÃO LLM]: Avaliar mãe e recém-nascido. Monitorar sinais vitais, aleitamento e cicatrização. Aconselhar sobre cuidados pós-parto e sinais de alerta dentro da janela de tempo.
+
+31º Parada: Riacho Fundo
+    - Tipo de Atendimento: Consulta de Rotina
+    - [AÇÃO LLM]: Realizar consulta médica padrão. Focar na saúde preventiva e bem-estar da mulher. Disponibilizar informações sobre acesso a serviços de saúde.
+
+32º Parada: Guará
+    - Tipo de Atendimento: Atendimento pós-parto (Janela de Tempo)
+    - [AÇÃO LLM]: Avaliar mãe e recém-nascido. Monitorar sinais vitais, aleitamento e cicatrização. Aconselhar sobre cuidados pós-parto e sinais de alerta dentro da janela de tempo.
+
+33º Parada: Sudoeste/Octogonal
+    - Tipo de Atendimento: Consulta de Rotina
+    - [AÇÃO LLM]: Realizar consulta médica padrão. Focar na saúde preventiva e bem-estar da mulher. Disponibilizar informações sobre acesso a serviços de saúde.
+
+34º Parada: Arapoanga
+    - Tipo de Atendimento: Consulta de Rotina
+    - [AÇÃO LLM]: Realizar consulta médica padrão. Focar na saúde preventiva e bem-estar da mulher. Disponibilizar informações sobre acesso a serviços de saúde.
+
+35º Parada: Fercal
+    - Tipo de Atendimento: Consulta de Rotina
+    - [AÇÃO LLM]: Realizar consulta médica padrão. Focar na saúde preventiva e bem-estar da mulher. Disponibilizar informações sobre acesso a serviços de saúde.
