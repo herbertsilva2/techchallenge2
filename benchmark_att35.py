@@ -3,43 +3,20 @@
 Coordenadas das 35 Regiões Administrativas do Distrito Federal (DF)
 """
 
-att_35_cities_locations = [
-    (-15.7795, -47.9296), # 1. Brasília (Plano Piloto)
-    (-16.0160, -48.0682), # 2. Gama
-    (-15.8333, -48.0563), # 3. Taguatinga
-    (-15.6103, -48.1200), # 4. Brazlândia
-    (-15.6580, -47.7925), # 5. Sobradinho
-    (-15.6216, -47.6521), # 6. Planaltina
-    (-15.7757, -47.7799), # 7. Paranoá
-    (-15.8711, -47.9709), # 8. Núcleo Bandeirante
-    (-15.8127, -48.1038), # 9. Ceilândia
-    (-15.8102, -47.9713), # 10. Guará
-    (-15.7950, -47.9267), # 11. Cruzeiro
-    (-15.8705, -48.0902), # 12. Samambaia
-    (-16.0036, -47.9872), # 13. Santa Maria
-    (-15.9028, -47.7760), # 14. São Sebastião
-    (-15.9150, -48.0999), # 15. Recanto das Emas
-    (-15.9064, -47.8624), # 16. Lago Sul
-    (-15.8814, -48.0169), # 17. Riacho Fundo
-    (-15.7212, -47.8328), # 18. Lago Norte
-    (-15.8500, -47.9469), # 19. Candangolândia
-    (-15.8394, -48.0289), # 20. Águas Claras
-    (-15.9039, -48.0381), # 21. Riacho Fundo II
-    (-15.8028, -47.9250), # 22. Sudoeste/Octogonal
-    (-15.7078, -47.8761), # 23. Varjão
-    (-15.8864, -47.9542), # 24. Park Way
-    (-15.7761, -47.9961), # 25. SCIA (Estrutural)
-    (-15.6200, -47.8181), # 26. Sobradinho II
-    (-15.8672, -47.7753), # 27. Jardim Botânico
-    (-15.7483, -47.7633), # 28. Itapoã
-    (-15.8078, -47.9572), # 29. SIA
-    (-15.8117, -48.0211), # 30. Vicente Pires
-    (-15.5869, -47.8703), # 31. Fercal
-    (-15.8203, -48.1364), # 32. Sol Nascente/Pôr do Sol
-    (-15.8500, -48.0200), # 33. Arniqueira
-    (-15.5900, -47.6400), # 34. Arapoanga
-    (-15.9189, -48.2436)  # 35. Água Quente
-]
+att_35_cities_locations = {
+    "Plano Piloto": (0.23, 0.37), "Gama": (0.12, 0.92), "Taguatinga": (0.19, 0.49),
+    "Brazlândia": (0.08, 0.28), "Sobradinho": (0.49, 0.36), "Planaltina": (0.66, 0.15),
+    "Paranoá": (0.67, 0.74), "N. Bandeirante": (0.31, 0.67), "Ceilândia": (0.06, 0.51),
+    "Guará": (0.30, 0.58), "Cruzeiro": (0.35, 0.52), "Samambaia": (0.10, 0.69),
+    "Santa Maria": (0.30, 0.89), "São Sebastião": (0.56, 0.86), "Recanto das Emas": (0.15, 0.74),
+    "Lago Sul": (0.38, 0.67), "Riacho Fundo": (0.28, 0.70), "Lago Norte": (0.42, 0.43),
+    "Candangolândia": (0.34, 0.64), "Águas Claras": (0.25, 0.60), "Riacho Fundo II": (0.25, 0.78),
+    "Sudoeste/Octogonal": (0.36, 0.55), "Varjão": (0.41, 0.37), "Park Way": (0.32, 0.78),
+    "SCIA (Estrutural)": (0.29, 0.48), "Sobradinho II": (0.39, 0.24), "Jardim Botânico": (0.40, 0.76),
+    "Itapoã": (0.52, 0.43), "SIA": (0.32, 0.47), "Vicente Pires": (0.25, 0.53),
+    "Fercal": (0.34, 0.07), "Sol Nascente": (0.09, 0.60), "Arniqueira": (0.26, 0.64),
+    "Arapoanga": (0.64, 0.25), "Água Quente": (0.03, 0.79)
+}
 
 # Nova ordem inicial aleatória. O algoritmo genético irá otimizá-la!
 att_35_cities_order = [
