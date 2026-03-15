@@ -39,6 +39,7 @@ BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 GREEN = (0, 200, 0)
+ORANGE = (255, 140, 0)
 
 # Criar a janela em Fullscreen
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
@@ -98,41 +99,48 @@ for nome in nomes_ras:
     cities_locations.append((x, y))
 
 # ==============================================================================
-# --- FUNÇÃO FITNESS ESPECÍFICA DESTE PROJETO (VRP) ---
+# --- FUNÇÃO FITNESS ESPECÍFICA DESTE PROJETO (VRP MÚLTIPLOS VEÍCULOS) ---
 # ==============================================================================
 def calculate_vrp_fitness(path):
-    distance = 0
-    penalty = 0
-    n = len(path)
-    DISTANCIA_MAXIMA = 24000
+    # Divide as 35 cidades para as duas ambulâncias
+    meio = len(path) // 2
+    rota1 = path[:meio]
+    rota2 = path[meio:]
 
-    for i in range(n):
-        p1 = path[i]
-        p2 = path[(i + 1) % n]
-        dist_step = math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
-        distance += dist_step
+    def calcular_custo_veiculo(rota_veiculo):
+        distance = 0
+        penalty = 0
+        n = len(rota_veiculo)
+        DISTANCIA_MAXIMA = 15000 # Reduzimos a distância máxima pois a rota é menor
 
-        orig_idx = cities_locations.index(p1)
-        tipo = tipos_atendimento[orig_idx]
+        for i in range(n):
+            p1 = rota_veiculo[i]
+            p2 = rota_veiculo[(i + 1) % n]
+            dist_step = math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
+            distance += dist_step
 
-        # Multas muito mais suaves (escala de milhares em vez de bilhões)
-        if "Emergências" in tipo:
-            penalty += (i ** 2) * 200     # Multa moderada (força a ir para o início)
-        elif "violência" in tipo.lower():
-            penalty += (i ** 2) * 100     # Segunda maior prioridade
-        elif "hormonais" in tipo.lower():
-            if distance > 8000:
-                penalty += (distance - 8000) * 5  # Suavizada a multa de temperatura
-            penalty += (i * 50)           # Pressão leve (linear) para vir antes
-        elif "pós-parto" in tipo.lower():
-            if i > 20:
-                penalty += (i - 20) * 100 # Penalidade leve por atraso
+            orig_idx = cities_locations.index(p1)
+            tipo = tipos_atendimento[orig_idx]
 
-    # Multa de distância total máxima também suavizada
-    if distance > DISTANCIA_MAXIMA:
-        penalty += (distance - DISTANCIA_MAXIMA) * 10
+            if "Emergências" in tipo:
+                penalty += (i ** 2) * 200
+            elif "violência" in tipo.lower():
+                penalty += (i ** 2) * 100
+            elif "hormonais" in tipo.lower():
+                if distance > 6000: # Limite de refrigeração ajustado
+                    penalty += (distance - 6000) * 5
+                penalty += (i * 50)
+            elif "pós-parto" in tipo.lower():
+                if i > 10: # Ajustado pois cada veículo faz ~17 paradas
+                    penalty += (i - 10) * 100
 
-    return distance + penalty
+        if distance > DISTANCIA_MAXIMA:
+            penalty += (distance - DISTANCIA_MAXIMA) * 10
+
+        return distance + penalty
+
+    # O custo da geração é a soma das rotas da Ambulância 1 e Ambulância 2
+    return calcular_custo_veiculo(rota1) + calcular_custo_veiculo(rota2)
 
 def draw_paths(surface, path, color, width=2):
     if len(path) > 1:
@@ -206,10 +214,17 @@ while running:
         screen.blit(background_image, (map_x, map_y))
 
     if best_solution and len(best_solution) > 0:
-        draw_paths(screen, best_solution, BLUE, width=2)
-        origem = best_solution[0]
-        pygame.draw.circle(screen, GREEN, origem, NODE_RADIUS + 3)
-        pygame.draw.circle(screen, WHITE, origem, NODE_RADIUS)
+        meio = len(best_solution) // 2
+        rota1 = best_solution[:meio]
+        rota2 = best_solution[meio:]
+
+        # Desenhar Rota 1 (Azul)
+        draw_paths(screen, rota1, BLUE, width=2)
+        pygame.draw.circle(screen, GREEN, rota1[0], NODE_RADIUS + 3)  # Partida Azul
+
+        # Desenhar Rota 2 (Laranja)
+        draw_paths(screen, rota2, ORANGE, width=2)
+        pygame.draw.circle(screen, GREEN, rota2[0], NODE_RADIUS + 3)  # Partida Laranja
 
     for city in cities_locations:
         pygame.draw.circle(screen, RED, city, NODE_RADIUS)
@@ -291,21 +306,38 @@ while running:
     texto_aviso = font_small.render("Aperte 'Q' para sair e gerar LLM", True, RED)
     screen.blit(texto_aviso, (PANEL_WIDTH // 2, y_text + 30))
 
-    screen.blit(font_large.render("Ordem da rota atual:", True, BLACK), (20, y_text + 110))
+    # screen.blit(font_large.render("Ordem da rota atual:", True, BLACK), (20, y_text + 110))
+
+    # ==========================================================================
+    # DESENHO DAS LISTAS DE CIDADES (DUAS AMBULÂNCIAS)
+    # ==========================================================================
+    y_list_title = y_text + 110
 
     if best_solution:
-        y_list = y_text + 140
-        for i, city_pos in enumerate(best_solution):
+        # Divide a rota exatamente ao meio para as duas equipas
+        meio = len(best_solution) // 2
+        rota1 = best_solution[:meio]
+        rota2 = best_solution[meio:]
+
+        y_list = y_list_title + 30
+
+        # Títulos das Colunas com as respetivas cores
+        screen.blit(font_large.render("Equipe 1 (Azul):", True, BLUE), (20, y_list_title))
+        screen.blit(font_large.render("Equipe 2 (Laranja):", True, ORANGE), (PANEL_WIDTH // 2, y_list_title))
+
+        # Desenhar Rota 1 na Coluna da Esquerda
+        for i, city_pos in enumerate(rota1):
             idx = cities_locations.index(city_pos)
             nome_cidade = nomes_ras[idx]
             texto_lista = font_small.render(f"{i + 1:02d}. {nome_cidade}", True, BLACK)
+            screen.blit(texto_lista, (20, y_list + (i * 20)))
 
-            max_lines = (HEIGHT - y_list - 20) // 20
-
-            if i < max_lines:
-                screen.blit(texto_lista, (20, y_list + (i * 20)))
-            else:
-                screen.blit(texto_lista, (PANEL_WIDTH // 2, y_list + ((i - max_lines) * 20)))
+        # Desenhar Rota 2 na Coluna da Direita
+        for i, city_pos in enumerate(rota2):
+            idx = cities_locations.index(city_pos)
+            nome_cidade = nomes_ras[idx]
+            texto_lista = font_small.render(f"{i + 1:02d}. {nome_cidade}", True, BLACK)
+            screen.blit(texto_lista, (PANEL_WIDTH // 2, y_list + (i * 20)))
 
     pygame.display.flip()
 
@@ -325,9 +357,17 @@ ordem_final_indices = [cities_locations.index(cidade) for cidade in best_solutio
 
 print("[2/4] A gerar o Manual de Instruções e estimativas de deslocamento...")
 relatorio_mock = "MANUAL DE INSTRUÇÕES E ROTEIRO DE EQUIPE\n\n"
+meio_lista = len(ordem_final_indices) // 2
+
 for i, idx in enumerate(ordem_final_indices):
     nome_ra = nomes_ras[idx]
     tipo = tipos_atendimento[idx]
+
+    # Lógica Matemática para reiniciar a numeração na segunda equipe
+    if i < meio_lista:
+        ordem_equipe = i + 1
+    else:
+        ordem_equipe = (i - meio_lista) + 1
 
     distancia_estimada = random.randint(5, 25)
     tempo_estimado = int(distancia_estimada * 1.5)
@@ -343,7 +383,8 @@ for i, idx in enumerate(ordem_final_indices):
     else:
         acao_llm = "Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde."
 
-    relatorio_mock += f"{i + 1}º Parada: {nome_ra}\n"
+    # Usando a variável 'ordem_equipe' no texto final
+    relatorio_mock += f"{ordem_equipe}º Parada: {nome_ra}\n"
     relatorio_mock += f"   - Tipo de Atendimento: {tipo}\n"
     relatorio_mock += f"   - Deslocamento Estimado: {distancia_estimada} km (Aprox. {tempo_estimado} min)\n"
     relatorio_mock += f"   - [AÇÃO LLM]: {acao_llm}\n\n"
@@ -364,39 +405,71 @@ coords_df = [
 
 mapa_folium = folium.Map(location=[-15.7950, -47.9296], zoom_start=10)
 
-for i in range(len(ordem_final_indices)):
-    idx_atual = ordem_final_indices[i]
-    idx_prox = ordem_final_indices[(i + 1) % len(ordem_final_indices)]
-    lat1, lon1 = coords_df[idx_atual]
-    lat2, lon2 = coords_df[idx_prox]
-    url = f"http://router.project-osrm.org/route/v1/driving/{lon1},{lat1};{lon2},{lat2}?overview=full&geometries=geojson"
-    try:
-        resposta = requests.get(url)
-        if resposta.status_code == 200:
-            dados = resposta.json()
-            coordenadas_rota = dados['routes'][0]['geometry']['coordinates']
-            rota_folium = [[lat, lon] for lon, lat in coordenadas_rota]
-            folium.PolyLine(rota_folium, color="blue", weight=3.5, opacity=0.8).add_to(mapa_folium)
-        else:
-            folium.PolyLine([(lat1, lon1), (lat2, lon2)], color="blue", weight=3.5, opacity=0.8).add_to(mapa_folium)
-    except Exception:
-        folium.PolyLine([(lat1, lon1), (lat2, lon2)], color="blue", weight=3.5, opacity=0.8).add_to(mapa_folium)
-    time.sleep(0.1)
+# 1. Divide a lista de índices finais exatamente ao meio
+meio = len(ordem_final_indices) // 2
+rota1_indices = ordem_final_indices[:meio]
+rota2_indices = ordem_final_indices[meio:]
 
+
+# 2. Função auxiliar para traçar a rota com a cor certa no GPS
+def desenhar_rota_gps(indices, cor_linha):
+    # Nota: Não usamos o "+ 1 % len" aqui para que a rota termine na última paragem
+    for i in range(len(indices) - 1):
+        idx_atual = indices[i]
+        idx_prox = indices[i + 1]
+        lat1, lon1 = coords_df[idx_atual]
+        lat2, lon2 = coords_df[idx_prox]
+
+        url = f"http://router.project-osrm.org/route/v1/driving/{lon1},{lat1};{lon2},{lat2}?overview=full&geometries=geojson"
+        try:
+            resposta = requests.get(url)
+            if resposta.status_code == 200:
+                dados = resposta.json()
+                coordenadas_rota = dados['routes'][0]['geometry']['coordinates']
+                rota_folium = [[lat, lon] for lon, lat in coordenadas_rota]
+                folium.PolyLine(rota_folium, color=cor_linha, weight=4.5, opacity=0.8).add_to(mapa_folium)
+            else:
+                folium.PolyLine([(lat1, lon1), (lat2, lon2)], color=cor_linha, weight=4.5, opacity=0.8).add_to(
+                    mapa_folium)
+        except Exception:
+            folium.PolyLine([(lat1, lon1), (lat2, lon2)], color=cor_linha, weight=4.5, opacity=0.8).add_to(mapa_folium)
+        time.sleep(0.1)  # Pausa para não sobrecarregar a API pública de GPS
+
+
+# 3. Manda desenhar as duas rotas separadas
+print("      -> A traçar rotas da Equipe Azul...")
+desenhar_rota_gps(rota1_indices, "blue")
+
+print("      -> A traçar rotas da Equipe Laranja...")
+desenhar_rota_gps(rota2_indices, "orange")
+
+# Mapeamento dos marcadores com numeração e bordas separadas por equipe
 for ordem, idx in enumerate(ordem_final_indices):
     lat, lon = coords_df[idx]
     nome_ra = nomes_ras[idx]
     tipo_atendimento = tipos_atendimento[idx]
 
+    # Descobrir qual é a equipe e reiniciar a ordem
+    meio_lista = len(ordem_final_indices) // 2
+    if ordem < meio_lista:
+        ordem_equipe = ordem + 1
+        cor_borda = "blue"
+        nome_equipe = "Equipe 1 (Azul)"
+    else:
+        ordem_equipe = (ordem - meio_lista) + 1
+        cor_borda = "orange"
+        nome_equipe = "Equipe 2 (Laranja)"
+
+    # Cores de prioridade médica (fundo da bolinha)
     cor_fundo = "green"
     if "Emergências" in tipo_atendimento:
         cor_fundo = "darkred"
     elif "violência" in tipo_atendimento.lower():
         cor_fundo = "darkorange"
 
-    tamanho = "28px" if ordem == 0 else "22px"
-    borda = "3px solid black" if ordem == 0 else "2px solid white"
-    z_index = "1000" if ordem == 0 else "auto"
+    tamanho = "28px" if ordem_equipe == 1 else "22px"
+    borda = f"3px solid {cor_borda}" if ordem_equipe == 1 else f"2px solid {cor_borda}"
+    z_index = "1000" if ordem_equipe == 1 else "auto"
 
     html_num = f'''
         <div style="font-family: Arial; color: white; background-color: {cor_fundo}; 
@@ -404,13 +477,13 @@ for ordem, idx in enumerate(ordem_final_indices):
             display: flex; justify-content: center; align-items: center; 
             font-weight: bold; font-size: 12px; border: {borda};
             box-shadow: 2px 2px 4px rgba(0,0,0,0.5); z-index: {z_index};">
-            {ordem + 1}
+            {ordem_equipe}
         </div>
     '''
     folium.Marker(
         location=[lat, lon],
         icon=folium.DivIcon(html=html_num, icon_anchor=(12, 12)),
-        tooltip=f"<b>{ordem + 1}º Parada: {nome_ra}</b><br>{tipo_atendimento}"
+        tooltip=f"<b>{nome_equipe} | {ordem_equipe}º Parada: {nome_ra}</b><br>{tipo_atendimento}"
     ).add_to(mapa_folium)
 
 mapa_folium.save("resultado_tsp_mapa.html")

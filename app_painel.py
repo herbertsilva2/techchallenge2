@@ -44,19 +44,36 @@ except FileNotFoundError:
     st.error("Arquivo de roteiro não encontrado. Execute o algoritmo primeiro.")
     st.stop()
 
-# 1. Métricas Resumo
-total_paradas = len(dados_roteiro)
-total_emergencias = sum(1 for p in dados_roteiro if "Emergências" in p["tipo"])
-total_violencia = sum(1 for p in dados_roteiro if "violência" in p["tipo"].lower())
-total_hormonios = sum(1 for p in dados_roteiro if "hormonais" in p["tipo"].lower())
-total_rotina = sum(1 for p in dados_roteiro if "Rotina" in p["tipo"] or "pós-parto" in p["tipo"].lower())
+# Dividir os dados para as duas equipes
+meio = len(dados_roteiro) // 2
+equipe_azul = dados_roteiro[:meio]
+equipe_laranja = dados_roteiro[meio:]
 
-col1, col2, col3, col4, col5 = st.columns(5)
-col1.metric("Total de Paradas (RAs)", total_paradas)
-col2.metric("Emergências (Críticas)", total_emergencias, delta="Prioridade 1", delta_color="inverse")
-col3.metric("Casos de Violência", total_violencia)
-col4.metric("Med. Hormonais", total_hormonios)
-col5.metric("Atend. Rotina/Pós-parto", total_rotina)
+
+# Função auxiliar para gerar métricas visuais sem repetir código
+def exibir_metricas_equipe(nome_equipe, dados, cor):
+    st.markdown(f"<h4 style='color: {cor};'>{nome_equipe}</h4>", unsafe_allow_html=True)
+
+    total_paradas = len(dados)
+    total_emergencias = sum(1 for p in dados if "Emergências" in p["tipo"])
+    total_violencia = sum(1 for p in dados if "violência" in p["tipo"].lower())
+    total_hormonios = sum(1 for p in dados if "hormonais" in p["tipo"].lower())
+    total_rotina = sum(1 for p in dados if "Rotina" in p["tipo"] or "pós-parto" in p["tipo"].lower())
+
+    c1, c2, c3, c4, c5 = st.columns(5)
+    c1.metric("Total de Paradas", total_paradas)
+    c2.metric("Emergências (Críticas)", total_emergencias, delta="Prioridade 1", delta_color="inverse")
+    c3.metric("Casos de Violência", total_violencia)
+    c4.metric("Med. Hormonais", total_hormonios)
+    c5.metric("Rotina/Pós-parto", total_rotina)
+
+
+# 1. Métricas Resumo por Equipe
+st.subheader("📊 Resumo Operacional da Frota")
+
+exibir_metricas_equipe("🚙 Equipe 1 (Azul)", equipe_azul, "#1f77b4")
+st.markdown("<br>", unsafe_allow_html=True)  # Espaçamento elegante
+exibir_metricas_equipe("🚑 Equipe 2 (Laranja)", equipe_laranja, "#ff7f0e")
 
 st.markdown("---")
 
@@ -84,69 +101,93 @@ except FileNotFoundError:
 st.markdown("---")
 
 # ==========================================
-# 4. Roteiro Detalhado com LLM (COM FILTRO E GERAÇÃO DINÂMICA)
+# 4. Roteiro Detalhado com LLM (DIVIDIDO POR EQUIPES)
 # ==========================================
-st.subheader("📋 Roteiro Detalhado de Atendimento")
+st.subheader("📋 Roteiro Detalhado de Atendimento por Equipe")
 
-# Filtro de Prioridade alinhado com o documento
+# Filtro de Prioridade
 filtro_tipo = st.selectbox(
     "🔍 Filtrar paradas por prioridade médica:",
     ["Todas as Paradas", "Emergências obstétricas", "Violência doméstica", "Medicamentos hormonais",
      "Pós-parto / Rotina"]
 )
 
-dados_filtrados = dados_roteiro
-if filtro_tipo == "Emergências obstétricas":
-    dados_filtrados = [p for p in dados_roteiro if "Emergências" in p["tipo"]]
-elif filtro_tipo == "Violência doméstica":
-    dados_filtrados = [p for p in dados_roteiro if "violência" in p["tipo"].lower()]
-elif filtro_tipo == "Medicamentos hormonais":
-    dados_filtrados = [p for p in dados_roteiro if "hormonais" in p["tipo"].lower()]
-elif filtro_tipo == "Pós-parto / Rotina":
-    dados_filtrados = [p for p in dados_roteiro if "Rotina" in p["tipo"] or "pós-parto" in p["tipo"].lower()]
+# Divide a lista de paradas exatamente ao meio, igual fizemos no mapa GPS
+meio = len(dados_roteiro) // 2
+equipe_azul = dados_roteiro[:meio]
+equipe_laranja = dados_roteiro[meio:]
 
-st.markdown(
-    f"Mostrando **{len(dados_filtrados)}** parada(s) com esta classificação. Clique para ver as orientações e tempo de viagem.")
 
-# No seu bloco try, chame a chave de forma 100% segura!
-CHAVE_API_STREAMLIT = st.secrets["GEMINI_API_KEY"]
+def filtrar_dados(dados):
+    if filtro_tipo == "Emergências obstétricas":
+        return [p for p in dados if "Emergências" in p["tipo"]]
+    elif filtro_tipo == "Violência doméstica":
+        return [p for p in dados if "violência" in p["tipo"].lower()]
+    elif filtro_tipo == "Medicamentos hormonais":
+        return [p for p in dados if "hormonais" in p["tipo"].lower()]
+    elif filtro_tipo == "Pós-parto / Rotina":
+        return [p for p in dados if "Rotina" in p["tipo"] or "pós-parto" in p["tipo"].lower()]
+    return dados
+
+
+azul_filtrado = filtrar_dados(equipe_azul)
+laranja_filtrado = filtrar_dados(equipe_laranja)
+
+st.markdown(f"Mostrando **{len(azul_filtrado) + len(laranja_filtrado)}** parada(s) no total com esta classificação.")
+
+# Inicializar o cliente do Gemini
 client = None
 try:
-    client = genai.Client(api_key=CHAVE_API_STREAMLIT)
+    # Se você já configurou o st.secrets, ele puxa de lá. Se não, ponha a chave na string abaixo.
+    if "GEMINI_API_KEY" in st.secrets:
+        client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
+    else:
+        CHAVE_API_STREAMLIT = "COLOQUE_AQUI_A_SUA_CHAVE_NOVA"
+        client = genai.Client(api_key=CHAVE_API_STREAMLIT)
 except:
     pass
 
-# Desenha as paradas com o botão interativo de IA
-for parada in dados_filtrados:
-    icone = "🟢"
-    if "Emergências" in parada["tipo"]:
-        icone = "🔴"
-    elif "violência" in parada["tipo"].lower():
-        icone = "🟠"
-    elif "hormonais" in parada["tipo"].lower():
-        icone = "🔵"
+# Criar duas colunas visuais no Streamlit (Lado a Lado)
+col1, col2 = st.columns(2)
 
-    with st.expander(f"{icone} {parada['ordem']}º Parada: {parada['ra']} - {parada['tipo']}"):
-        st.write(f"**🛣️ Trajeto:** {parada['deslocamento']}")
-        st.write(f"**📌 Protocolo Padrão (Offline):** {parada['acao']}")
 
-        # O grande diferencial: Botão que chama o Gemini em tempo real!
-        if st.button(f"✨ Gerar Protocolo Específico com IA", key=f"btn_{parada['ordem']}_{parada['ra']}"):
-            if client:
-                with st.spinner("A IA está analisando os protocolos médicos..."):
-                    try:
-                        # Prompt de Engenharia (Prompt Engineering) exigido no Edital
-                        prompt_acao = f"Você é um médico coordenador orientando a equipe de ambulância que acaba de chegar em {parada['ra']} para um caso de: '{parada['tipo']}'. Escreva 3 bullet points curtos, diretos e sensíveis à saúde da mulher, com a conduta médica imediata a ser tomada pela equipe no local."
+def desenhar_cards(dados_equipe, coluna, nome_equipe, cor_hex, icone_veiculo):
+    with coluna:
+        st.markdown(f"<h4 style='color: {cor_hex};'>{icone_veiculo} {nome_equipe} ({len(dados_equipe)} paradas)</h4>",
+                    unsafe_allow_html=True)
+        for parada in dados_equipe:
+            icone = "🟢"
+            if "Emergências" in parada["tipo"]:
+                icone = "🔴"
+            elif "violência" in parada["tipo"].lower():
+                icone = "🟠"
+            elif "hormonais" in parada["tipo"].lower():
+                icone = "🔵"
 
-                        resposta_ia = client.models.generate_content(
-                            model='gemini-2.5-flash',
-                            contents=prompt_acao
-                        )
-                        st.info(f"**🤖 Conduta Médica Gerada pelo Gemini:**\n\n{resposta_ia.text}")
-                    except Exception as e:
-                        st.error(f"Erro de conexão com a IA: {e}")
-            else:
-                st.warning("Verifique a sua chave de API para usar esta função.")
+            with st.expander(f"{icone} Parada {parada['ordem']}: {parada['ra']} - {parada['tipo']}"):
+                st.write(f"**🛣️ Trajeto:** {parada['deslocamento']}")
+                st.write(f"**📌 Protocolo Padrão:** {parada['acao']}")
+
+                # Botão do Gemini
+                if st.button(f"✨ Gerar Protocolo com IA", key=f"btn_{parada['ordem']}_{parada['ra']}"):
+                    if client:
+                        with st.spinner("A IA está analisando os protocolos médicos..."):
+                            try:
+                                prompt_acao = f"Você é um médico coordenador orientando a equipe de ambulância que acaba de chegar em {parada['ra']} para um caso de: '{parada['tipo']}'. Escreva 3 bullet points curtos, diretos e sensíveis à saúde da mulher, com a conduta médica imediata a ser tomada pela equipe no local."
+                                resposta_ia = client.models.generate_content(
+                                    model='gemini-2.5-flash',
+                                    contents=prompt_acao
+                                )
+                                st.info(f"**🤖 Conduta Médica Gerada pelo Gemini:**\n\n{resposta_ia.text}")
+                            except Exception as e:
+                                st.error(f"Erro de conexão com a IA: {e}")
+                    else:
+                        st.warning("Verifique a sua chave de API para usar esta função.")
+
+
+# Desenha as informações nas respectivas colunas
+desenhar_cards(azul_filtrado, col1, "Equipe 1 (Azul)", "#1f77b4", "🚙")
+desenhar_cards(laranja_filtrado, col2, "Equipe 2 (Laranja)", "#ff7f0e", "🚑")
 
 # ==========================================
 # 5. Assistente Virtual (Híbrido: Nuvem/Offline)
