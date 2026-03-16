@@ -213,27 +213,40 @@ if pergunta:
 
     resposta_final = ""
     try:
-        # No seu bloco try, chame a chave de forma 100% segura!
-        CHAVE_API_STREAMLIT = st.secrets["GEMINI_API_KEY"]
+        # TENTA USAR O GEMINI
+        client = None
+        if "GEMINI_API_KEY" in st.secrets:
+            client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 
-        # 1. Cria o Cliente com a sua chave
-        client = genai.Client(api_key=CHAVE_API_STREAMLIT)
+        # 1. Separar as listas para a IA entender a divisão da frota
+        meio_lista = len(dados_roteiro) // 2
+        rota_azul = ", ".join([f"{p['ra']} ({p['tipo']})" for p in dados_roteiro[:meio_lista]])
+        rota_laranja = ", ".join([f"{p['ra']} ({p['tipo']})" for p in dados_roteiro[meio_lista:]])
 
-        resumo_rota = ", ".join([f"{p['ra']} ({p['tipo']})" for p in dados_roteiro])
-        prompt_chat = f"Você é o assistente logístico. A rota de hoje tem: {resumo_rota}. Responda de forma curta e amigável: {pergunta}"
+        # 2. Engenharia de Prompt: Explicar o cenário logístico completo
+        prompt_chat = (
+            f"Você é o assistente logístico chefe de uma frota médica. "
+            f"Temos duas ambulâncias em campo hoje.\n"
+            f"A rota da Equipe Azul é: {rota_azul}.\n"
+            f"A rota da Equipe Laranja é: {rota_laranja}.\n\n"
+            f"Com base apenas nestes dados, responda de forma curta, direta e amigável à pergunta: '{pergunta}'"
+        )
 
-        # 2. Chama a geração de conteúdo usando o modelo mais recente!
         resposta_ia = client.models.generate_content(
-            model='gemini-2.5-flash',  # <--- MUDE APENAS ESTA LINHA (DE 1.5 PARA 2.5)
+            model='gemini-2.5-flash',
             contents=prompt_chat
         )
 
         resposta_final = f"☁️ **IA Online:** {resposta_ia.text}"
 
     except Exception as e:
+        # Opcional: st.error(f"Falha na API do Google: {e}")
 
-        # VAI MOSTRAR O ERRO REAL A VERMELHO NO ECRÃ PARA SABERMOS O QUE SE PASSA
-        st.error(f"Falha na API do Google: {e}")
+        # --- ADICIONE ESTAS 3 LINHAS AQUI PARA O CHATBOT VOLTAR A FUNCIONAR ---
+        total_emergencias = sum(1 for p in dados_roteiro if "Emergências" in p["tipo"])
+        total_violencia = sum(1 for p in dados_roteiro if "violência" in p["tipo"].lower())
+        total_hormonios = sum(1 for p in dados_roteiro if "hormonais" in p["tipo"].lower())
+        # ----------------------------------------------------------------------
 
         # FALLBACK OFFLINE AUTOMÁTICO SE A IA FALHAR
         pergunta_lower = pergunta.lower()
@@ -247,7 +260,7 @@ if pergunta:
         elif "hormon" in pergunta_lower or "medicamento" in pergunta_lower:
             resposta_final = f"🔌 **Modo Offline:** Temos **{total_hormonios} entregas de medicamentos**. Mantenha a caixa refrigerada."
         else:
-            resposta_final = f"🔌 **Modo Offline Ativo**. No momento, só consigo informar sobre: **emergências, primeira parada, violência ou medicamentos**. Pergunte, por exemplo, 'Quantas emergências?'"
+            resposta_final = f"🔌 **Modo Offline Ativo**. No momento, só consigo informar sobre: **emergências, primeira parada, violência ou medicamentos**."
 
     with st.chat_message("assistant"):
         st.markdown(resposta_final)
