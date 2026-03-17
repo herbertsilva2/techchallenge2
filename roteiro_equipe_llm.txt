@@ -1,177 +1,177 @@
 MANUAL DE INSTRUÇÕES E ROTEIRO DE EQUIPE
 
-1º Parada: Planaltina
-   - Tipo de Atendimento: Casos de violência doméstica (protocolos especiais)
-   - Deslocamento Estimado: 13 km (Aprox. 19 min)
-   - [AÇÃO LLM]: Discrição. Abordagem sensível e discreta. Assegurar privacidade e ativar protocolo de apoio psicossocial.
-
-2º Parada: Lago Sul
+1º Parada: Riacho Fundo II
    - Tipo de Atendimento: Emergências obstétricas (prioridade máxima)
-   - Deslocamento Estimado: 13 km (Aprox. 19 min)
+   - Deslocamento Estimado: 16 km (Aprox. 24 min)
    - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
 
-3º Parada: Santa Maria
+2º Parada: N. Bandeirante
+   - Tipo de Atendimento: Casos de violência doméstica (protocolos especiais)
+   - Deslocamento Estimado: 9 km (Aprox. 13 min)
+   - [AÇÃO LLM]: Discrição. Abordagem sensível e discreta. Assegurar privacidade e ativar protocolo de apoio psicossocial.
+
+3º Parada: São Sebastião
    - Tipo de Atendimento: Emergências obstétricas (prioridade máxima)
+   - Deslocamento Estimado: 22 km (Aprox. 33 min)
+   - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
+
+4º Parada: Paranoá
+   - Tipo de Atendimento: Emergências obstétricas (prioridade máxima)
+   - Deslocamento Estimado: 15 km (Aprox. 22 min)
+   - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
+
+5º Parada: Cruzeiro
+   - Tipo de Atendimento: Emergências obstétricas (prioridade máxima)
+   - Deslocamento Estimado: 22 km (Aprox. 33 min)
+   - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
+
+6º Parada: Brazlândia
+   - Tipo de Atendimento: Emergências obstétricas (prioridade máxima)
+   - Deslocamento Estimado: 8 km (Aprox. 12 min)
+   - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
+
+7º Parada: SIA
+   - Tipo de Atendimento: Casos de violência doméstica (protocolos especiais)
    - Deslocamento Estimado: 20 km (Aprox. 30 min)
-   - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
-
-4º Parada: Gama
-   - Tipo de Atendimento: Casos de violência doméstica (protocolos especiais)
-   - Deslocamento Estimado: 11 km (Aprox. 16 min)
    - [AÇÃO LLM]: Discrição. Abordagem sensível e discreta. Assegurar privacidade e ativar protocolo de apoio psicossocial.
 
-5º Parada: Brazlândia
+8º Parada: Itapoã
    - Tipo de Atendimento: Casos de violência doméstica (protocolos especiais)
-   - Deslocamento Estimado: 17 km (Aprox. 25 min)
+   - Deslocamento Estimado: 13 km (Aprox. 19 min)
    - [AÇÃO LLM]: Discrição. Abordagem sensível e discreta. Assegurar privacidade e ativar protocolo de apoio psicossocial.
 
-6º Parada: Sobradinho II
-   - Tipo de Atendimento: Casos de violência doméstica (protocolos especiais)
-   - Deslocamento Estimado: 25 km (Aprox. 37 min)
-   - [AÇÃO LLM]: Discrição. Abordagem sensível e discreta. Assegurar privacidade e ativar protocolo de apoio psicossocial.
+9º Parada: Arapoanga
+   - Tipo de Atendimento: Atendimento pós-parto (janelas de tempo específicas)
+   - Deslocamento Estimado: 7 km (Aprox. 10 min)
+   - [AÇÃO LLM]: Janela de Tempo. Realizar avaliação pós-parto, focando na recuperação materna e neonatal.
 
-7º Parada: N. Bandeirante
+10º Parada: Sobradinho II
    - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
-   - Deslocamento Estimado: 25 km (Aprox. 37 min)
+   - Deslocamento Estimado: 16 km (Aprox. 24 min)
    - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
 
-8º Parada: Guará
+11º Parada: SCIA (Estrutural)
+   - Tipo de Atendimento: Consulta de Rotina
+   - Deslocamento Estimado: 23 km (Aprox. 34 min)
+   - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
+
+12º Parada: Taguatinga
+   - Tipo de Atendimento: Atendimento pós-parto (janelas de tempo específicas)
+   - Deslocamento Estimado: 18 km (Aprox. 27 min)
+   - [AÇÃO LLM]: Janela de Tempo. Realizar avaliação pós-parto, focando na recuperação materna e neonatal.
+
+13º Parada: Recanto das Emas
+   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
+   - Deslocamento Estimado: 16 km (Aprox. 24 min)
+   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
+
+14º Parada: Sudoeste/Octogonal
+   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
+   - Deslocamento Estimado: 8 km (Aprox. 12 min)
+   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
+
+15º Parada: Sobradinho
+   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
+   - Deslocamento Estimado: 20 km (Aprox. 30 min)
+   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
+
+16º Parada: Varjão
+   - Tipo de Atendimento: Consulta de Rotina
+   - Deslocamento Estimado: 14 km (Aprox. 21 min)
+   - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
+
+17º Parada: Park Way
    - Tipo de Atendimento: Consulta de Rotina
    - Deslocamento Estimado: 19 km (Aprox. 28 min)
    - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
 
-9º Parada: Ceilândia
-   - Tipo de Atendimento: Consulta de Rotina
-   - Deslocamento Estimado: 15 km (Aprox. 22 min)
-   - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
-
-10º Parada: SIA
-   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
-   - Deslocamento Estimado: 16 km (Aprox. 24 min)
-   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
-
-11º Parada: Sobradinho
-   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
-   - Deslocamento Estimado: 25 km (Aprox. 37 min)
-   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
-
-12º Parada: Park Way
-   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
-   - Deslocamento Estimado: 25 km (Aprox. 37 min)
-   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
-
-13º Parada: Água Quente
-   - Tipo de Atendimento: Consulta de Rotina
-   - Deslocamento Estimado: 18 km (Aprox. 27 min)
-   - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
-
-14º Parada: Arniqueira
-   - Tipo de Atendimento: Consulta de Rotina
-   - Deslocamento Estimado: 16 km (Aprox. 24 min)
-   - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
-
-15º Parada: Candangolândia
-   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
-   - Deslocamento Estimado: 7 km (Aprox. 10 min)
-   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
-
-16º Parada: São Sebastião
-   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
-   - Deslocamento Estimado: 5 km (Aprox. 7 min)
-   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
-
-17º Parada: Fercal
-   - Tipo de Atendimento: Consulta de Rotina
-   - Deslocamento Estimado: 16 km (Aprox. 24 min)
-   - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
-
-1º Parada: Paranoá
+1º Parada: Guará
    - Tipo de Atendimento: Emergências obstétricas (prioridade máxima)
-   - Deslocamento Estimado: 14 km (Aprox. 21 min)
+   - Deslocamento Estimado: 23 km (Aprox. 34 min)
    - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
 
-2º Parada: Jardim Botânico
+2º Parada: Água Quente
    - Tipo de Atendimento: Emergências obstétricas (prioridade máxima)
    - Deslocamento Estimado: 20 km (Aprox. 30 min)
    - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
 
-3º Parada: Sol Nascente
+3º Parada: Gama
    - Tipo de Atendimento: Emergências obstétricas (prioridade máxima)
-   - Deslocamento Estimado: 12 km (Aprox. 18 min)
+   - Deslocamento Estimado: 23 km (Aprox. 34 min)
    - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
 
-4º Parada: Cruzeiro
+4º Parada: Arniqueira
    - Tipo de Atendimento: Emergências obstétricas (prioridade máxima)
-   - Deslocamento Estimado: 16 km (Aprox. 24 min)
+   - Deslocamento Estimado: 8 km (Aprox. 12 min)
    - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
 
-5º Parada: Lago Norte
+5º Parada: Riacho Fundo
    - Tipo de Atendimento: Emergências obstétricas (prioridade máxima)
-   - Deslocamento Estimado: 12 km (Aprox. 18 min)
+   - Deslocamento Estimado: 19 km (Aprox. 28 min)
    - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
 
-6º Parada: Itapoã
+6º Parada: Jardim Botânico
+   - Tipo de Atendimento: Emergências obstétricas (prioridade máxima)
+   - Deslocamento Estimado: 25 km (Aprox. 37 min)
+   - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
+
+7º Parada: Planaltina
+   - Tipo de Atendimento: Emergências obstétricas (prioridade máxima)
+   - Deslocamento Estimado: 10 km (Aprox. 15 min)
+   - [AÇÃO LLM]: Urgência! Avaliar estado materno-fetal imediatamente e estabilizar para transporte urgente se necessário.
+
+8º Parada: Sol Nascente
    - Tipo de Atendimento: Casos de violência doméstica (protocolos especiais)
    - Deslocamento Estimado: 10 km (Aprox. 15 min)
    - [AÇÃO LLM]: Discrição. Abordagem sensível e discreta. Assegurar privacidade e ativar protocolo de apoio psicossocial.
 
-7º Parada: Riacho Fundo
-   - Tipo de Atendimento: Casos de violência doméstica (protocolos especiais)
-   - Deslocamento Estimado: 25 km (Aprox. 37 min)
-   - [AÇÃO LLM]: Discrição. Abordagem sensível e discreta. Assegurar privacidade e ativar protocolo de apoio psicossocial.
-
-8º Parada: Recanto das Emas
-   - Tipo de Atendimento: Casos de violência doméstica (protocolos especiais)
-   - Deslocamento Estimado: 18 km (Aprox. 27 min)
-   - [AÇÃO LLM]: Discrição. Abordagem sensível e discreta. Assegurar privacidade e ativar protocolo de apoio psicossocial.
-
-9º Parada: Vicente Pires
-   - Tipo de Atendimento: Casos de violência doméstica (protocolos especiais)
-   - Deslocamento Estimado: 16 km (Aprox. 24 min)
-   - [AÇÃO LLM]: Discrição. Abordagem sensível e discreta. Assegurar privacidade e ativar protocolo de apoio psicossocial.
-
-10º Parada: Taguatinga
-   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
-   - Deslocamento Estimado: 6 km (Aprox. 9 min)
-   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
-
-11º Parada: Varjão
-   - Tipo de Atendimento: Atendimento pós-parto (janelas de tempo específicas)
-   - Deslocamento Estimado: 24 km (Aprox. 36 min)
-   - [AÇÃO LLM]: Janela de Tempo. Realizar avaliação pós-parto, focando na recuperação materna e neonatal.
-
-12º Parada: Riacho Fundo II
-   - Tipo de Atendimento: Atendimento pós-parto (janelas de tempo específicas)
-   - Deslocamento Estimado: 25 km (Aprox. 37 min)
-   - [AÇÃO LLM]: Janela de Tempo. Realizar avaliação pós-parto, focando na recuperação materna e neonatal.
-
-13º Parada: Samambaia
-   - Tipo de Atendimento: Atendimento pós-parto (janelas de tempo específicas)
-   - Deslocamento Estimado: 9 km (Aprox. 13 min)
-   - [AÇÃO LLM]: Janela de Tempo. Realizar avaliação pós-parto, focando na recuperação materna e neonatal.
-
-14º Parada: Águas Claras
-   - Tipo de Atendimento: Atendimento pós-parto (janelas de tempo específicas)
-   - Deslocamento Estimado: 23 km (Aprox. 34 min)
-   - [AÇÃO LLM]: Janela de Tempo. Realizar avaliação pós-parto, focando na recuperação materna e neonatal.
-
-15º Parada: Sudoeste/Octogonal
-   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
-   - Deslocamento Estimado: 7 km (Aprox. 10 min)
-   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
-
-16º Parada: SCIA (Estrutural)
+9º Parada: Lago Norte
    - Tipo de Atendimento: Consulta de Rotina
-   - Deslocamento Estimado: 16 km (Aprox. 24 min)
+   - Deslocamento Estimado: 7 km (Aprox. 10 min)
+   - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
+
+10º Parada: Lago Sul
+   - Tipo de Atendimento: Consulta de Rotina
+   - Deslocamento Estimado: 15 km (Aprox. 22 min)
+   - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
+
+11º Parada: Santa Maria
+   - Tipo de Atendimento: Atendimento pós-parto (janelas de tempo específicas)
+   - Deslocamento Estimado: 13 km (Aprox. 19 min)
+   - [AÇÃO LLM]: Janela de Tempo. Realizar avaliação pós-parto, focando na recuperação materna e neonatal.
+
+12º Parada: Samambaia
+   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
+   - Deslocamento Estimado: 9 km (Aprox. 13 min)
+   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
+
+13º Parada: Ceilândia
+   - Tipo de Atendimento: Consulta de Rotina
+   - Deslocamento Estimado: 18 km (Aprox. 27 min)
+   - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
+
+14º Parada: Vicente Pires
+   - Tipo de Atendimento: Consulta de Rotina
+   - Deslocamento Estimado: 20 km (Aprox. 30 min)
+   - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
+
+15º Parada: Candangolândia
+   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
+   - Deslocamento Estimado: 17 km (Aprox. 25 min)
+   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
+
+16º Parada: Fercal
+   - Tipo de Atendimento: Consulta de Rotina
+   - Deslocamento Estimado: 12 km (Aprox. 18 min)
    - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
 
 17º Parada: Plano Piloto
-   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
-   - Deslocamento Estimado: 20 km (Aprox. 30 min)
-   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
+   - Tipo de Atendimento: Consulta de Rotina
+   - Deslocamento Estimado: 21 km (Aprox. 31 min)
+   - [AÇÃO LLM]: Consulta de Rotina. Avaliar saúde geral e necessidades de prevenção/promoção da saúde.
 
-18º Parada: Arapoanga
-   - Tipo de Atendimento: Medicamentos hormonais (temperatura controlada)
-   - Deslocamento Estimado: 18 km (Aprox. 27 min)
-   - [AÇÃO LLM]: Medicamentos hormonais. Verificar e garantir armazenamento a 2-8°C. Administrar conforme prescrição.
+18º Parada: Águas Claras
+   - Tipo de Atendimento: Atendimento pós-parto (janelas de tempo específicas)
+   - Deslocamento Estimado: 14 km (Aprox. 21 min)
+   - [AÇÃO LLM]: Janela de Tempo. Realizar avaliação pós-parto, focando na recuperação materna e neonatal.
 

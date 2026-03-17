@@ -142,7 +142,7 @@ try:
     if "GEMINI_API_KEY" in st.secrets:
         client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
     else:
-        CHAVE_API_STREAMLIT = "COLOQUE_AQUI_A_SUA_CHAVE_NOVA"
+        CHAVE_API_STREAMLIT = "AIzaSyBkXVelfXgrZdxVf9unCsFzNFlCn7dd4IA"
         client = genai.Client(api_key=CHAVE_API_STREAMLIT)
 except:
     pass

@@ -13,6 +13,29 @@ from benchmark_att35 import *
 # IMPORTAÇÃO DOS MÉTODOS DO SEU MÓDULO (genetic_algorithm.py)
 from genetic_algorithm import generate_random_population, order_crossover, mutate, sort_population
 
+import json
+
+# Carregar as rotas reais offline
+try:
+    with open("rotas_offline.json", "r") as f:
+        rotas_ruas = json.load(f)
+    print("🛣️ Rotas de ruas offline carregadas com sucesso!")
+except:
+    rotas_ruas = None
+    print("⚠️ Ficheiro rotas_offline.json não encontrado. A usar linhas retas.")
+
+# Precisamos das coordenadas GPS para mapear para o ecrã
+coords_df_gps = [
+    (-15.7795, -47.9296), (-16.0160, -48.0682), (-15.8333, -48.0563), (-15.6103, -48.1200), (-15.6580, -47.7925),
+    (-15.6216, -47.6521), (-15.7757, -47.7799), (-15.8711, -47.9709), (-15.8127, -48.1038), (-15.8102, -47.9713),
+    (-15.7950, -47.9267), (-15.8705, -48.0902), (-16.0036, -47.9872), (-15.9028, -47.7760), (-15.9150, -48.0999),
+    (-15.9064, -47.8624), (-15.8814, -48.0169), (-15.7212, -47.8328), (-15.8500, -47.9469), (-15.8394, -48.0289),
+    (-15.9039, -48.0381), (-15.8028, -47.9250), (-15.7078, -47.8761), (-15.8864, -47.9542), (-15.7761, -47.9961),
+    (-15.6200, -47.8181), (-15.8672, -47.7753), (-15.7483, -47.7633), (-15.8078, -47.9572), (-15.8117, -48.0211),
+    (-15.5869, -47.8703), (-15.8203, -48.1364), (-15.8500, -48.0200), (-15.5900, -47.6400), (-15.9189, -48.2436)
+]
+
+
 # ==============================================================================
 # --- CONFIGURAÇÕES INICIAIS DO PYGAME ---
 # ==============================================================================
@@ -28,10 +51,10 @@ PANEL_WIDTH = int(WIDTH * 0.3)
 MAP_WIDTH = WIDTH - PANEL_WIDTH
 
 NODE_RADIUS = 5
-POPULATION_SIZE = 100
-MUTATION_RATE = 0.3 # Taxa ideal para o novo método de mutação
+POPULATION_SIZE = 150
+MUTATION_RATE = 0.3
 MAX_STAGNATION = 50
-FPS = 10
+FPS = 4
 
 # Cores
 WHITE = (255, 255, 255)
@@ -52,7 +75,7 @@ font_large = pygame.font.SysFont("Arial", 18, bold=True)
 # --- CARREGAR IMAGEM E AJUSTAR PROPORÇÃO (SEM DISTORCER) ---
 # ==============================================================================
 try:
-    bg_original = pygame.image.load("mapa_df.png")
+    bg_original = pygame.image.load("mapa_df_real.png")
     img_w, img_h = bg_original.get_size()
 
     scale = min(MAP_WIDTH / img_w, HEIGHT / img_h)
@@ -65,7 +88,7 @@ try:
     map_y = (HEIGHT - new_h) // 2
 
 except Exception as e:
-    print(f"Aviso: Não foi possível carregar 'mapa_df.png'. Erro: {e}")
+    print(f"Aviso: Não foi possível carregar 'mapa_df_real.png'. Erro: {e}")
     background_image = None
     map_x, map_y, new_w, new_h = PANEL_WIDTH, 0, MAP_WIDTH, HEIGHT
 
@@ -142,9 +165,86 @@ def calculate_vrp_fitness(path):
     # O custo da geração é a soma das rotas da Ambulância 1 e Ambulância 2
     return calcular_custo_veiculo(rota1) + calcular_custo_veiculo(rota2)
 
-def draw_paths(surface, path, color, width=2):
-    if len(path) > 1:
-        pygame.draw.lines(surface, color, True, path, width)
+
+def draw_paths(screen, path, color, width=2):
+    if len(path) < 2:
+        return
+
+    # 1. Escalas Globais (Calcula a proporção GPS vs Tela)
+    lats = [c[0] for c in coords_df_gps]
+    lons = [c[1] for c in coords_df_gps]
+    min_lat, max_lat = min(lats), max(lats)
+    min_lon, max_lon = min(lons), max(lons)
+
+    xs = [c[0] for c in cities_locations]
+    ys = [c[1] for c in cities_locations]
+    min_x, max_x = min(xs), max(xs)
+    min_y, max_y = min(ys), max(ys)
+
+    scale_x = (max_x - min_x) / (max_lon - min_lon)
+    scale_y = (max_y - min_y) / (max_lat - min_lat)
+
+    # 2. Loop de desenho
+    for i in range(len(path)):
+        p1 = path[i]
+        p2 = path[(i + 1) % len(path)]
+
+        idx1 = cities_locations.index(p1)
+        idx2 = cities_locations.index(p2)
+        chave_rota = f"{idx1}-{idx2}"
+
+        if rotas_ruas and chave_rota in rotas_ruas:
+            pontos_rua = rotas_ruas[chave_rota]
+            pontos_ecra = []
+            N = len(pontos_rua)
+
+            lat1, lon1 = coords_df_gps[idx1]
+            lat2, lon2 = coords_df_gps[idx2]
+
+            # --- A MÁGICA FINAL: Calcular a distância real do percurso ---
+            distancias = [0.0]
+            for k in range(1, N):
+                lon_ant, lat_ant = pontos_rua[k - 1]
+                lon_atual, lat_atual = pontos_rua[k]
+                # Distância entre o ponto anterior e o atual
+                dist = math.hypot(lon_atual - lon_ant, lat_atual - lat_ant)
+                distancias.append(distancias[-1] + dist)
+
+            distancia_total = distancias[-1]
+
+            for k, (lon, lat) in enumerate(pontos_rua):
+                # O segredo: 't' agora é a percentagem da distância REAL percorrida,
+                # e não o índice do array! Isso desfaz todos os loops e "nós".
+                if distancia_total > 0:
+                    t = distancias[k] / distancia_total
+                else:
+                    t = 0
+
+                # A linha reta teórica do GPS
+                base_lon = lon1 + t * (lon2 - lon1)
+                base_lat = lat1 + t * (lat2 - lat1)
+
+                # O desvio (curva) que a rua faz em relação à reta
+                offset_lon = lon - base_lon
+                offset_lat = lat - base_lat
+
+                # A linha reta na sua tela do Pygame
+                base_x = p1[0] + t * (p2[0] - p1[0])
+                base_y = p1[1] + t * (p2[1] - p1[1])
+
+                # Aplica as curvas
+                x_ecra = base_x + (offset_lon * scale_x)
+                y_ecra = base_y - (offset_lat * scale_y)
+
+                pontos_ecra.append((int(x_ecra), int(y_ecra)))
+
+            if len(pontos_ecra) > 1:
+                # Cola as pontas cirurgicamente
+                pontos_ecra[0] = p1
+                pontos_ecra[-1] = p2
+                pygame.draw.lines(screen, color, False, pontos_ecra, width)
+        else:
+            pygame.draw.line(screen, color, p1, p2, width)
 
 # ==============================================================================
 # --- LOOP PRINCIPAL (PYGAME) ---
@@ -168,13 +268,18 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-            sys.exit()
+
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_q:
+            if event.key == pygame.K_ESCAPE:
                 running = False
-            elif event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                sys.exit()
+            elif event.key == pygame.K_q:
+                # O seu código atual que gera relatórios e abre o painel...
+                running = False
+
+            # ADICIONE ESTAS 3 LINHAS AQUI (Tirar foto com a tecla P)
+            elif event.key == pygame.K_p:
+                pygame.image.save(screen, "foto_simulacao.png")
+                print("📸 Foto do ecrã guardada com sucesso!")
 
     if evolving:
         population_fitness = [calculate_vrp_fitness(individual) for individual in population]
@@ -226,8 +331,18 @@ while running:
         draw_paths(screen, rota2, ORANGE, width=2)
         pygame.draw.circle(screen, GREEN, rota2[0], NODE_RADIUS + 3)  # Partida Laranja
 
-    for city in cities_locations:
+        # Desenhar os Nós (Cidades) e os Nomes com Sombra
+    for i, city in enumerate(cities_locations):
         pygame.draw.circle(screen, RED, city, NODE_RADIUS)
+        nome_cidade = nomes_ras[i]
+
+        # 1. Desenha a Sombra (Preta) ligeiramente deslocada
+        texto_sombra = font_small.render(nome_cidade, True, BLACK)
+        screen.blit(texto_sombra, (city[0] + 9, city[1] - 7))
+
+        # 2. Desenha o Texto Principal (Branco) por cima
+        texto_principal = font_small.render(nome_cidade, True, WHITE)
+        screen.blit(texto_principal, (city[0] + 8, city[1] - 8))
 
     # ==========================================================================
     # DESENHO DO GRÁFICO DE FITNESS (ESCADA COM NÚMEROS)
@@ -338,6 +453,48 @@ while running:
             nome_cidade = nomes_ras[idx]
             texto_lista = font_small.render(f"{i + 1:02d}. {nome_cidade}", True, BLACK)
             screen.blit(texto_lista, (PANEL_WIDTH // 2, y_list + (i * 20)))
+
+        # ==========================================================================
+        # INTERATIVIDADE: EFEITO HOVER (PASSAR O RATO NAS CIDADES)
+        # ==========================================================================
+        mx, my = pygame.mouse.get_pos()
+
+        for i, city in enumerate(cities_locations):
+            # Calcula a distância entre o ponteiro do rato e a cidade
+            dist = math.hypot(mx - city[0], my - city[1])
+
+            # Se o rato estiver a menos de 15 píxeis da cidade (área de "toque")
+            if dist < 15:
+                nome_hover = nomes_ras[i]
+                tipo_hover = tipos_atendimento[i]
+
+                # Define a cor da caixa com base na gravidade
+                cor_caixa = GREEN
+                if "Emergências" in tipo_hover:
+                    cor_caixa = RED
+                elif "violência" in tipo_hover.lower():
+                    cor_caixa = ORANGE
+
+                # Desenha o fundo da caixa de informações (HUD escuro)
+                # O tamanho da caixa ajusta-se ao texto, mas fixamos em 280x50 para ficar elegante
+                hud_rect = pygame.Rect(mx + 15, my - 10, 280, 50)
+                pygame.draw.rect(screen, (20, 20, 20), hud_rect, border_radius=8)  # Fundo Cinza Escuro
+                pygame.draw.rect(screen, cor_caixa, hud_rect, 2, border_radius=8)  # Borda Colorida
+
+                # Textos dentro da caixa
+                txt_nome = font_small.render(f"📍 {nome_hover}", True, WHITE)
+
+                # Truncar o texto do tipo se for muito grande para caber na caixa
+                if len(tipo_hover) > 35:
+                    tipo_hover = tipo_hover[:32] + "..."
+                txt_tipo = font_small.render(tipo_hover, True, (200, 200, 200))
+
+                # Imprime os textos
+                screen.blit(txt_nome, (mx + 25, my - 2))
+                screen.blit(txt_tipo, (mx + 25, my + 20))
+
+                # Se encontrar uma cidade sob o rato, não precisa de verificar as outras
+                break
 
     pygame.display.flip()
 
